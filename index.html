@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Digital Kafe</title>
+    <style>
+        /* CSS: Desain Antarmuka Mobile-First */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            padding: 16px;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            color: #2c3e50;
+        }
+
+        header p {
+            font-size: 0.85rem;
+            color: #7f8c8d;
+        }
+
+        /* Filter Kategori */
+        .categories {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .category-btn {
+            background-color: #e2e8f0;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: 0.2s;
+        }
+
+        .category-btn.active {
+            background-color: #e67e22;
+            color: white;
+        }
+
+        /* Daftar Menu Grid/List */
+        .menu-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .menu-card {
+            display: flex;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .menu-card img {
+            width: 90px;
+            height: 90px;
+            object-fit: cover;
+        }
+
+        .menu-info {
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex: 1;
+        }
+
+        .menu-info h3 {
+            font-size: 1rem;
+            margin-bottom: 4px;
+
+        }
+
+        .menu-info p {
+            font-size: 0.75rem;
+            color: #666;
+            margin-bottom: 6px;
+        }
+
+        .menu-price {
+            font-weight: bold;
+            color: #e67e22;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>☕ Kopi Senja</h1>
+        <p>Pindai & Pilih Menu Favoritmu</p>
+    </header>
+
+    <!-- Filter Kategori -->
+    <div class="categories">
+        <button class="category-btn active" onclick="filterMenu('semua', this)">Semua</button>
+        <button class="category-btn" onclick="filterMenu('kopi', this)">Kopi</button>
+        <button class="category-btn" onclick="filterMenu('non-kopi', this)">Non-Kopi</button>
+        <button class="category-btn" onclick="filterMenu('makanan', this)">Makanan</button>
+    </div>
+
+    <!-- Container Daftar Menu -->
+    <div class="menu-list" id="menuContainer"></div>
+
+    <script>
+        // JavaScript: Data Menu (Dapat diubah dengan mudah oleh pemilik kafe)
+        const dataMenu = [
+            {
+                nama: "Kopi Susu Gula Aren",
+                kategori: "kopi",
+                harga: "Rp 18.000",
+                deskripsi: "Espresso khas dengan susu segar dan gula aren asli.",
+                gambar: "https://images.unsplash.com/photo-1541167760496-1628856ab772?w=300"
+            },
+            {
+                nama: "Americano Cold",
+                kategori: "kopi",
+                harga: "Rp 15.000",
+                deskripsi: "Seduhan kopi hitam dingin segar tanpa gula.",
+                gambar: "https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=300"
+            },
+            {
+                nama: "Matcha Latte",
+                kategori: "non-kopi",
+                harga: "Rp 22.000",
+                deskripsi: "Bubuk matcha Jepang premium digabung susu hangat/dingin.",
+                gambar: "https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=300"
+            },
+            {
+                nama: "French Fries Classic",
+                kategori: "makanan",
+                harga: "Rp 14.000",
+                deskripsi: "Kentang goreng renyah disajikan dengan saus sambal.",
+                gambar: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=300"
+            }
+        ];
+
+        // Fungsi Menampilkan Menu ke Halaman
+        function tampilkanMenu(items) {
+            const container = document.getElementById("menuContainer");
+            container.innerHTML = "";
+
+            items.forEach(item => {
+                const html = `
+                    <div class="menu-card">
+                        <img src="${item.gambar}" alt="${item.nama}">
+                        <div class="menu-info">
+                            <h3>${item.nama}</h3>
+                            <p>${item.deskripsi}</p>
+                            <span class="menu-price">${item.harga}</span>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += html;
+            });
+        }
+
+        // Fungsi Filter Berdasarkan Kategori
+        function filterMenu(kategori, button) {
+            // Ubah tampilan tombol aktif
+            document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+
+            if (kategori === 'semua') {
+                tampilkanMenu(dataMenu);
+            } else {
+                const hasilFilter = dataMenu.filter(item => item.kategori === kategori);
+                tampilkanMenu(hasilFilter);
+            }
+        }
+
+        // Tampilkan semua menu saat pertama kali dibuka
+        tampilkanMenu(dataMenu);
+    </script>
+</body>
+</html>
